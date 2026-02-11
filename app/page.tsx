@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, Smartphone, MapPin, Loader2 } from 'lucide-react';
+import { Footer } from '@/components/Footer';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -42,9 +43,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="flex flex-col min-h-screen">
       {/* Navigation */}
-      <nav className="p-6 flex justify-between items-center max-w-7xl mx-auto">
+      <nav className="p-6 flex justify-between items-center max-w-7xl mx-auto w-full">
         <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
           HotelWatch
         </div>
@@ -75,7 +76,7 @@ export default function Home() {
       </section>
 
       {/* Subscription Form */}
-      <div className="max-w-md mx-auto px-6 py-12 relative z-10">
+      <div className="max-w-md mx-auto px-6 py-12 relative z-10 w-full">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -166,7 +167,7 @@ export default function Home() {
       </div>
 
       {/* Value Props */}
-      <div className="max-w-5xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-8">
+      <div className="max-w-5xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-8 w-full flex-grow">
         {[
           { title: "Real-time Updates", description: "Get instant notifications when prices drop in your area." },
           { title: "Curated Deals", description: "We filter out the noise and only send you the best offers." },
@@ -179,9 +180,7 @@ export default function Home() {
         ))}
       </div>
 
-      <footer className="text-center py-8 text-neutral-600 text-sm">
-        © {new Date().getFullYear()} HotelWatch. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }
