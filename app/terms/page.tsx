@@ -26,7 +26,7 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">2. Description of Service</h2>
-                        <p>HotelWatch provides a subscription-based SMS notification service that alerts users about hotel rates in their specified zip code. The Service is provided "as is" and is subject to change or termination at any time.</p>
+                        <p>HotelWatch provides a subscription-based SMS notification service that alerts users about hotel rates in their specified zip code. The Service is provided "as is" and is subject to change or termination at any time. <strong>Message frequency varies.</strong></p>
                     </section>
 
                     <section>
@@ -36,12 +36,12 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">4. SMS Communications</h2>
-                        <p>By subscribing, you consent to receive recurring automated marketing messages and alerts from HotelWatch at the phone number provided. Message and data rates may apply. Consent is not a condition of purchase.</p>
+                        <p>By subscribing, you consent to receive recurring automated marketing messages and alerts from HotelWatch at the phone number provided. <strong>Message frequency varies.</strong> Message and data rates may apply. Consent is not a condition of purchase. For help, reply <strong>HELP</strong> to any message or email support@hotelwatch.com. To opt-out, reply <strong>STOP</strong> to any message.</p>
                     </section>
 
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">5. Cancellation and Termination</h2>
-                        <p>You may cancel your subscription at any time by replying STOP to any message or contacting our support. We reserve the right to terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason whatsoever.</p>
+                        <p>You may cancel your subscription at any time by replying <strong>STOP</strong> to any message or contacting our support. After texting STOP, you will receive one final message confirming that you have been unsubscribed. We reserve the right to terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason whatsoever.</p>
                     </section>
 
                     <section>
@@ -57,6 +57,11 @@ export default function TermsPage() {
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">8. Contact Us</h2>
                         <p>If you have any questions about these Terms, please contact us at support@hotelwatch.com.</p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold text-white mb-4">9. Privacy</h2>
+                        <p>Your use of the Service is also governed by our <Link href="/privacy" className="text-indigo-400 hover:text-indigo-300 underline">Privacy Policy</Link>, which is incorporated into these Terms by reference. Please review the Privacy Policy to understand our practices regarding the collection and use of your information.</p>
                     </section>
                 </div>
             </main>

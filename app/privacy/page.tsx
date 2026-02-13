@@ -42,7 +42,7 @@ export default function PrivacyPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">4. Sharing of Information</h2>
-                        <p>We do not share your personal information with third parties except as described in this policy or with your consent. We may disclose your information if required by law or to protect our rights or property.</p>
+                        <p>We do not share your personal information with third parties except as described in this policy or with your consent. We may disclose your information if required by law or to protect our rights or property. <strong>Mobile information will not be shared with third parties/affiliates for marketing/promotional purposes. All other categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.</strong></p>
                     </section>
 
                     <section>
@@ -58,6 +58,11 @@ export default function PrivacyPage() {
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">7. Contact Us</h2>
                         <p>If you have any questions about this Privacy Policy, please contact us at privacy@hotelwatch.com.</p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold text-white mb-4">8. SMS Consent Protection</h2>
+                        <p>Phone numbers collected for SMS purposes will not be sold, rented, or shared with third parties for marketing purposes. Phone numbers are only shared with our service providers (such as Twilio) for the sole purpose of message delivery.</p>
                     </section>
                 </div>
             </main>

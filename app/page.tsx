@@ -10,6 +10,7 @@ export default function Home() {
     name: '',
     phone: '',
     zipcode: '',
+    smsConsent: false,
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -31,7 +32,7 @@ export default function Home() {
       if (res.ok) {
         setStatus('success');
         setMessage('You have successfully subscribed!');
-        setFormData({ name: '', phone: '', zipcode: '' });
+        setFormData({ name: '', phone: '', zipcode: '', smsConsent: false });
       } else {
         setStatus('error');
         setMessage(data.error || 'Something went wrong.');
@@ -132,6 +133,30 @@ export default function Home() {
                   onChange={(e) => setFormData({ ...formData, zipcode: e.target.value })}
                 />
               </div>
+            </div>
+
+            <div className="pt-2">
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <div className="relative flex items-center pt-1">
+                  <input
+                    type="checkbox"
+                    id="smsConsent"
+                    className="peer sr-only"
+                    checked={formData.smsConsent}
+                    onChange={(e) => setFormData({ ...formData, smsConsent: e.target.checked })}
+                  />
+                  <div className="h-5 w-5 border-2 border-neutral-700 rounded peer-checked:bg-indigo-600 peer-checked:border-indigo-600 transition-all flex items-center justify-center">
+                    <CheckCircle className={`h-3.5 w-3.5 text-white transition-opacity ${formData.smsConsent ? 'opacity-100' : 'opacity-0'}`} />
+                  </div>
+                </div>
+                <span className="text-xs text-neutral-400 leading-normal">
+                  I agree to receive recurring automated SMS messages from HotelWatch regarding hotel rate alerts for my selected zip code. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for assistance. Consent is not a condition of purchase.
+                  <br />
+                  <a href="/privacy" className="text-indigo-400 hover:text-indigo-300 underline mt-1 inline-block">Privacy Policy</a>
+                  <span className="mx-1 text-neutral-600">|</span>
+                  <a href="/terms" className="text-indigo-400 hover:text-indigo-300 underline mt-1 inline-block">Terms of Service</a>
+                </span>
+              </label>
             </div>
 
             <button
