@@ -42,7 +42,7 @@ export default function PrivacyPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">4. Sharing of Information</h2>
-                        <p>We do not share your personal information with third parties except as described in this policy or with your consent. We may disclose your information if required by law or to protect our rights or property. <strong>Mobile information will not be shared with third parties/affiliates for marketing/promotional purposes. All other categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.</strong></p>
+                        <p>We do not share your personal information with third parties except as described in this policy or with your consent. We may disclose your information if required by law or to protect our rights or property. <strong>Mobile numbers and SMS consent will not be sold or shared with third parties or affiliates for marketing or promotional purposes.</strong> All other categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties.</p>
                     </section>
 
                     <section>

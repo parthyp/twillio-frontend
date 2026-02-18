@@ -36,7 +36,7 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-4">4. SMS Communications</h2>
-                        <p>By subscribing, you consent to receive recurring automated marketing messages and alerts from HotelWatch at the phone number provided. <strong>Message frequency varies.</strong> Message and data rates may apply. Consent is not a condition of purchase. For help, reply <strong>HELP</strong> to any message or email support@hotelwatch.com. To opt-out, reply <strong>STOP</strong> to any message.</p>
+                        <p>By subscribing, you consent to receive recurring automated marketing messages and alerts from HotelWatch at the phone number provided. <strong>Message frequency varies.</strong> Message and data rates may apply. Consent is not a condition of purchase. For help, reply <strong>HELP</strong> to any message or email support@hotelwatch.com. To opt-out, reply <strong>STOP</strong> at any time to unsubscribe. After texting STOP, you will receive one final message confirming that you have been unsubscribed.</p>
                     </section>
 
                     <section>

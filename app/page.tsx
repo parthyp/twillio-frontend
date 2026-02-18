@@ -141,6 +141,7 @@ export default function Home() {
                   <input
                     type="checkbox"
                     id="smsConsent"
+                    required
                     className="peer sr-only"
                     checked={formData.smsConsent}
                     onChange={(e) => setFormData({ ...formData, smsConsent: e.target.checked })}

@@ -11,9 +11,10 @@ datasource db {
 }
 
 model Subscription {
-  id        String   @id @default(uuid())
-  name      String
-  phone     String
-  zipcode   String
-  createdAt DateTime @default(now())
+  id           String   @id @default(uuid())
+  name         String
+  phone        String
+  zipcode      String
+  smsConsent   Boolean  @default(false)
+  createdAt    DateTime @default(now())
 }

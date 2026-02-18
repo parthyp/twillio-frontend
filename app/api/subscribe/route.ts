@@ -4,11 +4,18 @@ import { prisma } from '@/lib/db';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, phone, zipcode } = body;
+        const { name, phone, zipcode, smsConsent } = body;
 
         if (!name || !phone || !zipcode) {
             return NextResponse.json(
                 { error: 'Name, phone number, and zipcode are required.' },
+                { status: 400 }
+            );
+        }
+
+        if (!smsConsent) {
+            return NextResponse.json(
+                { error: 'You must agree to the SMS consent to subscribe.' },
                 { status: 400 }
             );
         }
@@ -33,6 +40,7 @@ export async function POST(request: Request) {
                 name,
                 phone,
                 zipcode,
+                smsConsent: !!smsConsent,
             },
         });
 
