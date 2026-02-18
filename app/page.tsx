@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, Smartphone, MapPin, Loader2 } from 'lucide-react';
 import { Footer } from '@/components/Footer';
@@ -153,9 +154,9 @@ export default function Home() {
                 <span className="text-xs text-neutral-400 leading-normal">
                   I agree to receive recurring automated SMS messages from HotelWatch regarding hotel rate alerts for my selected zip code. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for assistance. Consent is not a condition of purchase.
                   <br />
-                  <a href="/privacy" className="text-indigo-400 hover:text-indigo-300 underline mt-1 inline-block">Privacy Policy</a>
+                  <Link href="/privacy" className="text-indigo-400 hover:text-indigo-300 underline mt-1 inline-block">Privacy Policy</Link>
                   <span className="mx-1 text-neutral-600">|</span>
-                  <a href="/terms" className="text-indigo-400 hover:text-indigo-300 underline mt-1 inline-block">Terms of Service</a>
+                  <Link href="/terms" className="text-indigo-400 hover:text-indigo-300 underline mt-1 inline-block">Terms of Service</Link>
                 </span>
               </label>
             </div>
