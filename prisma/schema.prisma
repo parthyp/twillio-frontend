@@ -11,10 +11,12 @@ datasource db {
 }
 
 model Subscription {
-  id           String   @id @default(uuid())
-  name         String
-  phone        String
-  zipcode      String
-  smsConsent   Boolean  @default(false)
-  createdAt    DateTime @default(now())
+  id             String   @id @default(uuid())
+  name           String
+  phone          String
+  zipcode        String
+  plan           String   @default("BASIC")
+  selectedHotels String? // For PREMIUM plan, stores 15 hotel names
+  smsConsent     Boolean  @default(false)
+  createdAt      DateTime @default(now())
 }

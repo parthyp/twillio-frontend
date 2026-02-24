@@ -4,11 +4,18 @@ import { prisma } from '@/lib/db';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, phone, zipcode, smsConsent } = body;
+        const { name, phone, zipcode, smsConsent, plan, selectedHotels } = body;
 
-        if (!name || !phone || !zipcode) {
+        if (!name || !phone || !zipcode || !plan) {
             return NextResponse.json(
-                { error: 'Name, phone number, and zipcode are required.' },
+                { error: 'Name, phone number, zipcode, and plan are required.' },
+                { status: 400 }
+            );
+        }
+
+        if (plan === 'PREMIUM' && (!selectedHotels || selectedHotels.split(',').length < 15)) {
+            return NextResponse.json(
+                { error: 'Premium plan requires selecting exactly 15 hotels.' },
                 { status: 400 }
             );
         }
@@ -40,6 +47,8 @@ export async function POST(request: Request) {
                 name,
                 phone,
                 zipcode,
+                plan,
+                selectedHotels,
                 smsConsent: !!smsConsent,
             },
         });
