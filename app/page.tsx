@@ -3,15 +3,18 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, Smartphone, MapPin, Loader2 } from 'lucide-react';
+import { Send, CheckCircle, Smartphone, MapPin, Loader2, XCircle } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, Suspense } from 'react';
 import { Footer } from '@/components/Footer';
 
 export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
+    email: '',
     zipcode: '',
-    plan: 'BASIC',
+    plan: 'PREMIUM',
     selectedHotels: '',
     smsConsent: false,
   });
@@ -22,30 +25,16 @@ export default function Home() {
 
   const plans = [
     {
-      id: 'BASIC',
-      name: 'Basic',
-      price: '$9/mo',
-      features: ['10 hotels daily', 'Sorted by price', 'Daily SMS'],
-      color: 'from-blue-500 to-cyan-500'
-    },
-    {
-      id: 'PLUS',
-      name: 'Plus',
-      price: '$19/mo',
-      features: ['Everything in Basic', 'Total available rooms in ZIP', 'Detailed ZIP stats'],
-      color: 'from-indigo-500 to-purple-500'
-    },
-    {
       id: 'PREMIUM',
-      name: 'Premium',
+      name: 'Premium Plan',
       price: '$29/mo',
-      features: ['Pick 15 custom hotels', 'Rates & availability', 'Same-day updates'],
-      color: 'from-amber-500 to-orange-500'
+      features: ['Pick 10 custom hotels', '3 SMS alerts daily(9am, 12pm, 6pm)'],
+      color: 'from-amber-600 via-orange-500 to-red-400'
     }
   ];
 
   const addHotel = () => {
-    if (currentHotel && tempHotels.length < 15) {
+    if (currentHotel && tempHotels.length < 10) {
       const newHotels = [...tempHotels, currentHotel];
       setTempHotels(newHotels);
       setFormData({ ...formData, selectedHotels: newHotels.join(',') });
@@ -74,10 +63,29 @@ export default function Home() {
       const data = await res.json();
 
       if (res.ok) {
-        setStatus('success');
-        setMessage('You have successfully subscribed!');
-        setFormData({ name: '', phone: '', zipcode: '', plan: 'BASIC', selectedHotels: '', smsConsent: false });
-        setTempHotels([]);
+        // Now create the Checkout Session
+        const checkoutRes = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            plan: formData.plan,
+          }),
+        });
+
+        const checkoutData = await checkoutRes.json();
+
+        if (checkoutRes.ok && checkoutData.url) {
+          setStatus('success');
+          setMessage('Redirecting to Stripe for payment...');
+          setFormData({ name: '', phone: '', email: '', zipcode: '', plan: 'PREMIUM', selectedHotels: '', smsConsent: false });
+          setTempHotels([]);
+          window.location.href = checkoutData.url;
+        } else {
+          setStatus('error');
+          setMessage(checkoutData.error || 'Failed to create Stripe session.');
+        }
       } else {
         setStatus('error');
         setMessage(data.error || 'Something went wrong.');
@@ -105,33 +113,34 @@ export default function Home() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-bold tracking-tight"
+            className="text-5xl md:text-7xl font-bold tracking-tight leading-tight"
           >
-            Choose Your <span className="text-indigo-400">Perfect Plan</span>.
+            Track Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">Competition</span>. <br />
+            Protect Your <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-400">Revenue</span>.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-neutral-400 max-w-2xl mx-auto"
+            className="text-xl text-neutral-400 max-w-2xl mx-auto leading-relaxed"
           >
-            Daily SMS updates with the best hotel rates,room availability, and custom alerts.
+            The ultimate market intelligence tool for hotel owners. Get daily SMS alerts with the 10 cheapest rates from booking.com in your area.
           </motion.p>
         </div>
       </section>
 
       {/* Pricing and Form Section */}
       <div className="max-w-6xl mx-auto px-6 py-12 relative z-10 w-full">
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid max-w-md mx-auto gap-8 mb-16">
           {plans.map((plan) => (
             <motion.div
               key={plan.id}
-              whileHover={{ y: -5 }}
+              whileHover={{ y: -8, scale: 1.02 }}
               onClick={() => setFormData({ ...formData, plan: plan.id })}
-              className={`cursor-pointer group relative p-8 rounded-2xl border transition-all ${formData.plan === plan.id
-                ? 'bg-neutral-900 border-indigo-500 shadow-[0_0_30px_-10px_rgba(99,102,241,0.5)]'
-                : 'bg-neutral-900/50 border-neutral-800 hover:border-neutral-700'
+              className={`cursor-pointer group relative p-8 rounded-3xl border transition-all duration-300 ${formData.plan === plan.id
+                ? 'bg-neutral-900 border-indigo-500 shadow-[0_0_40px_-10px_rgba(99,102,241,0.4)]'
+                : 'bg-neutral-900/40 border-neutral-800 hover:border-neutral-700'
                 }`}
             >
               {formData.plan === plan.id && (
@@ -147,8 +156,8 @@ export default function Home() {
               </div>
               <ul className="space-y-3 mb-8">
                 {plan.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-sm text-neutral-400">
-                    <CheckCircle className="h-4 w-4 text-indigo-400 shrink-0" />
+                  <li key={idx} className="flex items-center gap-3 text-sm text-neutral-400 group-hover:text-neutral-300 transition-colors">
+                    <CheckCircle className={`h-4 w-4 shrink-0 ${formData.plan === plan.id ? 'text-indigo-400' : 'text-neutral-600'}`} />
                     {feature}
                   </li>
                 ))}
@@ -159,9 +168,10 @@ export default function Home() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-2xl mx-auto bg-neutral-900/50 backdrop-blur-xl border border-neutral-800 p-8 md:p-12 rounded-3xl shadow-2xl ring-1 ring-white/10"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-2xl mx-auto bg-neutral-900/60 backdrop-blur-2xl border border-neutral-800 p-8 md:p-12 rounded-[2rem] shadow-2xl ring-1 ring-white/10"
         >
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold mb-2">Subscribe to {plans.find(p => p.id === formData.plan)?.name}</h2>
@@ -198,10 +208,23 @@ export default function Home() {
                   />
                 </div>
               </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  className="w-full bg-neutral-800/50 border-neutral-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all placeholder:text-neutral-500"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
             </div>
 
             <div>
-              <label htmlFor="zipcode" className="block text-sm font-medium text-neutral-300 mb-2">Target Zip Code</label>
+              <label htmlFor="zipcode" className="block text-sm font-medium text-neutral-300 mb-2">Zip Code where hotel is location</label>
               <div className="relative">
                 <MapPin className="absolute left-4 top-3.5 h-5 w-5 text-neutral-500" />
                 <input
@@ -223,12 +246,12 @@ export default function Home() {
                 className="space-y-4 pt-4 border-t border-neutral-800"
               >
                 <label className="block text-sm font-medium text-neutral-300">
-                  Select 15 Hotels ({tempHotels.length}/15)
+                  Select 10 Hotels ({tempHotels.length}/10)
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    disabled={tempHotels.length >= 15}
+                    disabled={tempHotels.length >= 10}
                     className="flex-grow bg-neutral-800/50 border-neutral-700 rounded-xl px-4 py-3 text-white outline-none focus:ring-2 focus:ring-amber-500 transition-all disabled:opacity-50"
                     placeholder="Enter hotel name..."
                     value={currentHotel}
@@ -238,7 +261,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={addHotel}
-                    disabled={!currentHotel || tempHotels.length >= 15}
+                    disabled={!currentHotel || tempHotels.length >= 10}
                     className="px-6 bg-amber-600 hover:bg-amber-500 disabled:bg-neutral-800 text-white rounded-xl transition-colors"
                   >
                     Add
@@ -261,8 +284,8 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                {tempHotels.length < 15 && (
-                  <p className="text-xs text-neutral-500">Please add {15 - tempHotels.length} more hotels to continue.</p>
+                {tempHotels.length < 10 && (
+                  <p className="text-xs text-neutral-500">Please add {10 - tempHotels.length} more hotels to continue.</p>
                 )}
               </motion.div>
             )}
@@ -293,7 +316,7 @@ export default function Home() {
 
             <button
               type="submit"
-              disabled={status === 'loading' || (formData.plan === 'PREMIUM' && tempHotels.length < 15)}
+              disabled={status === 'loading' || (formData.plan === 'PREMIUM' && tempHotels.length < 10)}
               className={`w-full font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed mt-6 ${formData.plan === 'PREMIUM' ? 'bg-amber-600 hover:bg-amber-500' : 'bg-indigo-600 hover:bg-indigo-500'
                 } text-white`}
             >
@@ -317,14 +340,41 @@ export default function Home() {
             >
               <div className="flex items-center justify-center gap-2">
                 {status === 'success' && <CheckCircle className="h-4 w-4" />}
+                {status === 'error' && <XCircle className="h-4 w-4" />}
                 {message}
               </div>
             </motion.div>
           )}
+
+          <Suspense fallback={null}>
+            <StripeStatusHandler setStatus={setStatus} setMessage={setMessage} />
+          </Suspense>
         </motion.div>
       </div>
 
       <Footer />
     </div>
   );
+}
+
+function StripeStatusHandler({ setStatus, setMessage }: { 
+  setStatus: (s: 'idle' | 'loading' | 'success' | 'error') => void, 
+  setMessage: (m: string) => void 
+}) {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const canceled = searchParams.get('canceled');
+
+    if (success) {
+      setStatus('success');
+      setMessage('Subscription successful! Welcome to HotelWatch.');
+    } else if (canceled) {
+      setStatus('error');
+      setMessage('Payment was canceled. You can try again when you are ready.');
+    }
+  }, [searchParams, setStatus, setMessage]);
+
+  return null;
 }

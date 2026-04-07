@@ -14,9 +14,11 @@ model Subscription {
   id             String   @id @default(uuid())
   name           String
   phone          String
+  email          String?
   zipcode        String
-  plan           String   @default("BASIC")
+  plan           String   @default("PREMIUM")
   selectedHotels String? // For PREMIUM plan, stores 15 hotel names
   smsConsent     Boolean  @default(false)
+  active         Boolean  @default(true)
   createdAt      DateTime @default(now())
 }
