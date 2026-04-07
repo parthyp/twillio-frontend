@@ -106,6 +106,20 @@ export default function Home() {
         </div>
       </nav>
 
+      {/* Success Notification - Moving to top as requested */}
+      {status === 'success' && message && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mx-auto w-full px-6 mb-8"
+        >
+          <div className="bg-green-500/10 text-green-400 border border-green-500/20 p-4 rounded-2xl text-center flex items-center justify-center gap-3 shadow-[0_0_50px_-12px_rgba(34,197,94,0.3)]">
+            <CheckCircle className="h-5 w-5" />
+            <span className="font-semibold tracking-tight">{message}</span>
+          </div>
+        </motion.div>
+      )}
+
       {/* Hero Section */}
       <section className="relative pt-20 pb-12 px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/40 via-neutral-950 to-neutral-950 -z-10" />
@@ -332,16 +346,14 @@ export default function Home() {
             </button>
           </form>
 
-          {message && (
+          {status === 'error' && message && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`mt-6 p-4 rounded-xl text-sm text-center ${status === 'success' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'
-                }`}
+              className="mt-6 p-4 rounded-xl text-sm text-center bg-red-500/10 text-red-400 border border-red-500/20"
             >
               <div className="flex items-center justify-center gap-2">
-                {status === 'success' && <CheckCircle className="h-4 w-4" />}
-                {status === 'error' && <XCircle className="h-4 w-4" />}
+                <XCircle className="h-4 w-4" />
                 {message}
               </div>
             </motion.div>
