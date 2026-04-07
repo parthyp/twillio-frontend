@@ -8,7 +8,7 @@ export async function POST(request: Request) {
         });
 
         const body = await request.json();
-        const { name, phone, email, plan } = body;
+        const { name, phone, email, plan, subId } = body;
 
         if (!name || !phone || !plan) {
             return NextResponse.json(
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
                 },
             ],
             mode: 'subscription',
-            success_url: `${origin}/?success=true`,
+            success_url: `${origin}/?success=true${subId ? `&subId=${subId}` : ''}`,
             cancel_url: `${origin}/?canceled=true`,
             customer_email: email || undefined,
             metadata: {

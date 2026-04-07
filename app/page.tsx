@@ -71,6 +71,7 @@ export default function Home() {
             name: formData.name,
             phone: formData.phone,
             plan: formData.plan,
+            subId: data.subscription.id,
           }),
         });
 
@@ -366,10 +367,11 @@ function StripeStatusHandler({ setStatus, setMessage }: {
   useEffect(() => {
     const success = searchParams.get('success');
     const canceled = searchParams.get('canceled');
+    const subId = searchParams.get('subId');
 
     if (success) {
       setStatus('success');
-      setMessage('Subscription successful! Welcome to HotelWatch.');
+      setMessage(`Subscription successful! ${subId ? `Confirmation Number: HW-${subId.slice(-6).toUpperCase()}` : 'Welcome to HotelWatch.'}`);
     } else if (canceled) {
       setStatus('error');
       setMessage('Payment was canceled. You can try again when you are ready.');
